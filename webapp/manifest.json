@@ -1,0 +1,41 @@
+{
+  "sap.app": {
+	"id": "de.demo.timepicker",
+	"type": "application",
+	"i18n": "i18n/lang.properties",
+	"title": "{{appTitle}}",
+	"description": "{{appDescription}}",
+	"applicationVersion": {
+	  "version": "0.1.0"
+	},
+	
+  },
+  "sap.ui": {
+	"technology": "UI5",
+	"deviceTypes": {
+	  "desktop": true,
+	  "tablet": true,
+	  "phone": true
+	},
+	"supportedThemes": [
+	  "sap_bluecrystal"
+	]
+  },
+  "sap.ui5": {
+	"rootView": "de.demo.timepicker.view.App",
+	"dependencies": {
+	  "minUI5Version": "1.30",
+	  "libs": {
+		"sap.m": {}
+	  }
+	},
+	"models": {
+	  "i18n": {
+		"type": "sap.ui.model.resource.ResourceModel",
+		"settings": {
+		  "bundleName": "de.demo.timepicker.i18n.lang"
+		}
+	  }
+	}
+  }
+}
