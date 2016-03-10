@@ -3,8 +3,8 @@
 	"id": "de.demo.timepicker",
 	"type": "application",
 	"i18n": "i18n/lang.properties",
-	"title": "{{appTitle}}",
-	"description": "{{appDescription}}",
+	"title": "{{applicationTitelText}}",
+	"description": "{{applicationDescriptionText}}",
 	"applicationVersion": {
 	  "version": "0.1.0"
 	},
