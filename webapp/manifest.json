@@ -36,6 +36,13 @@
 		  "bundleName": "de.demo.timepicker.i18n.lang"
 		}
 	  }
+	},
+	"resources": {
+		"css": [
+			{
+			  "uri": "css/style.css"
+			}
+		  ]
 	}
   }
 }
