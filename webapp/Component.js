@@ -10,12 +10,6 @@ sap.ui.define([
 	},
       init : function () {
          UIComponent.prototype.init.apply(this, arguments);
-         
-         // set i18n model
-         var i18nModel = new ResourceModel({
-            bundleName : "de.demo.timepicker.i18n.lang"
-         });
-         this.setModel(i18nModel, "i18n");
       }
    });
 });
