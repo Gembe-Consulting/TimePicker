@@ -1,1 +1,23 @@
 
+.uiTfTimePickerIcon {
+  background-image: url("/XMII/CM/PES/Common/Image/IconsPES/iconTimePicker.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  overflow: visible;
+  display: inline;
+  position: absolute;
+  right: 0;
+  
+  font-size: 0;
+  color: transparent;
+
+  width: 20px;
+  height: 20px;
+  
+
+  
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
