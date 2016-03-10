@@ -1,212 +1,233 @@
 sap.ui.define([
-		"sap/ui/commons/ComboBox"
-	], function (ComboBox) {
-	"use strict";
+        "sap/ui/commons/ComboBox"
+    ], function (ComboBox) {
+    "use strict";
 
-	var TimePicker = ComboBox.extend("PES.Common.Control.TimePicker", {
+    var TimePicker = ComboBox.extend("PES.Common.Control.TimePicker", {
 
-			metadata : {
+            metadata : {
 
-				properties : {
+                properties : {
 
-					/**
-					 * Defines the time as a "HHmm" string, independent from the format used. The inherited textField "value" attribute uses the time format as configured via the locale.
-					 * The date is interpreted as gregorian date
-					 */
-					HHmm : {
-						type : "string",
-						group : "Misc",
-						defaultValue : null
-					},
-					/**
-					 * 
-					 */
-					predefinedTimeValuesUrl : {
-						type : "string",
-						group : "Misc",
-						defaultValue : null
-					},
-					/**
-					 * 
-					 */
-					predefinedTimeValuesPath : {
-						type : "string",
-						group : "Misc",
-						defaultValue : null
-					}
-				}
-			}
-		});
-	(function () {
-		/**
-		 * Initializes the control.
-		 * It is called from the constructor.
-		 * @private
-		 */
-		TimePicker.prototype.init = function () {
+                    /**
+                     * Defines the time as a "HHmm" string, independent from the format used. The inherited textField "value" attribute uses the time format as configured via the locale.
+                     * The date is interpreted as gregorian date
+                     */
+                    HHmm : {
+                        type : "string",
+                        group : "Misc",
+                        defaultValue : null
+                    },
+                    /**
+                     * Source Pattern
+                     */
+                    timeSourcePattern : {
+                        type : "string",
+                        group : "Misc",
+                        defaultValue : "HHmm",
+                        bindable : false
+                    },
+                    /**
+                     * Display Pattern
+                     */
+                    timeFormatStyle : {
+                        type : "string",
+                        group : "Misc",
+                        defaultValue : "short",
+                        bindable : false
+                    },
+                    /**
+                     *
+                     */
+                    predefinedTimeValuesUrl : {
+                        type : "string",
+                        group : "Misc",
+                        defaultValue : null
+                    },
+                    /**
+                     *
+                     */
+                    predefinedTimeValuesPath : {
+                        type : "string",
+                        group : "Misc",
+                        defaultValue : null
+                    }
+                }
+            }
+        });
+    (function () {
+        /**
+         * Initializes the control.
+         * It is called from the constructor.
+         * @private
+         */
+        TimePicker.prototype.init = function () {
 
-			ComboBox.prototype.init.apply(this, arguments);
+            ComboBox.prototype.init.apply(this, arguments);
 
-			this._oFormatHHmm = sap.ui.core.format.DateFormat.getTimeInstance({
-					style:"short",
-					strictParsing : true
-				});
-			this._oParseHHmm = sap.ui.core.format.DateFormat.getTimeInstance({
-					source:{pattern : "HH:mm"},
-					strictParsing : true
-				});
+            var sTimeFormatStyle = this.getTimeFormatStyle();
+            var sTimeSourcePattern = this.getTimeSourcePattern();
 
-			this._oMinDate = new Date(1, 0, 1);
-			this._oMinDate.setFullYear(1); // otherwise year 1 will be converted to year 1901
-			this._oMaxDate = new Date(9999, 11, 31, 23, 59, 59, 99);
-			this._oDate = new Date();
-			
+            this._oFormatHHmm = sap.ui.core.format.DateFormat.getTimeInstance({
+                    style : sTimeFormatStyle,
+                    strictParsing : true
+                });
 
-			var oModel = new sap.ui.model.json.JSONModel();	//set iSizeLimit to 300 (default: 100) to see all time items
-oModel.setSizeLimit(300);
-			oModel.loadData("/XMII/CM/PES/Common/Control/TimeValueData.json");
-			this.setModel(oModel);
-			
-			var oListItemTemplate = new sap.ui.core.ListItem({
-					text : {
-						path : "text",
-						type : new sap.ui.model.type.Time({
-							source : {
-								pattern : "HH:mm"
-							},
-							style:"short"
-						}),
-						mode : sap.ui.model.BindingMode.OneTime
-					},
-					key : {
-						path : "key",
-						mode : sap.ui.model.BindingMode.OneTime
-					}
-				});
+            this._oParseHHmm = sap.ui.core.format.DateFormat.getTimeInstance({
+                    source : {
+                        pattern : sTimeSourcePattern
+                    },
+                    strictParsing : true
+                });
 
-			this.bindItems({
-				path : "/timeValues",
-				template : oListItemTemplate,
-				mode : sap.ui.model.BindingMode.OneTime
-			});
+            this._oMinDate = new Date(1, 0, 1);
+            this._oMinDate.setFullYear(1); // otherwise year 1 will be converted to year 1901
+            this._oMaxDate = new Date(9999, 11, 31, 23, 59, 59, 99);
+            this._oDate = new Date();
 
+            var oModel = new sap.ui.model.json.JSONModel();
+            oModel.setSizeLimit(300); //set iSizeLimit to 300 (default: 100) to see all time items
+            oModel.loadData("../../data/TimeValues.json");
+            this.setModel(oModel);
 
-		};
+            var oListItemTemplate = new sap.ui.core.ListItem({
+                    text : {
+                        path : "text",
+                        type : new sap.ui.model.type.Time({
+                            source : {
+                                pattern : sTimeSourcePattern
+                            },
+                            style : sTimeFormatStyle
+                        }),
+                        mode : sap.ui.model.BindingMode.OneTime
+                    },
+                    key : {
+                        path : "key",
+                        mode : sap.ui.model.BindingMode.OneTime
+                    }
+                });
 
-		TimePicker.prototype.exit = function () {
+            this.bindItems({
+                path : "/timeValues",
+                template : oListItemTemplate,
+                mode : sap.ui.model.BindingMode.OneTime
+            });
 
-			this._oDate = undefined;
+        };
 
-		};
+        TimePicker.prototype.exit = function () {
 
-		TimePicker.prototype.setValue = function (sValue) {
+            this._oDate = undefined;
 
-			var sOldValue = this.getValue();
-			if (sValue == sOldValue) {
-				return this;
-			}
+        };
 
-			this.setProperty("value", sValue, true);
-			this._bValueSet = true;
+        TimePicker.prototype.setValue = function (sValue) {
 
-			if (sValue) {
-				this._oDate = this._parseValue(sValue);
-				if (!this._oDate || this._oDate.getTime() < this._oMinDate.getTime() || this._oDate.getTime() > this._oMaxDate.getTime()) {
-					this._oDate = undefined;
-					jQuery.sap.log.error("Value can not be converted to a valid time", this);
-				}
-			} else {
-				this._oDate = undefined;
-			}
+            var sOldValue = this.getValue();
+            if (sValue == sOldValue) {
+                return this;
+            }
 
-			var sHHmm = "";
-			if (this._oDate) {
-				sHHmm = this._oFormatHHmm.format(this._oDate);
-			}
+            this.setProperty("value", sValue, true);
+            this._bValueSet = true;
 
-			this.setProperty("HHmm", sHHmm, true);
+            if (sValue) {
+                this._oDate = this._parseValue(sValue);
+                if (!this._oDate || this._oDate.getTime() < this._oMinDate.getTime() || this._oDate.getTime() > this._oMaxDate.getTime()) {
+                    this._oDate = undefined;
+                    jQuery.sap.log.error("Value can not be converted to a valid time", this);
+                }
+            } else {
+                this._oDate = undefined;
+            }
 
-			if (this.getDomRef()) {
-				// update value in input field
-				var sOutputValue = "";
-				var $Input = jQuery(this.getInputDomRef());
-				if (this._oDate) {
-					// format date again - maybe value uses not the right pattern ???
-					sOutputValue = sValue;
-				}
-				$Input.val(sOutputValue);
-			}
+            var sHHmm = "";
+            if (this._oDate) {
+                sHHmm = this._oFormatHHmm.format(this._oDate);
+            }
 
-			return this;
+            this.setProperty("HHmm", sHHmm, true);
 
-		};
+            if (this.getDomRef()) {
+                // update value in input field
+                var sOutputValue = "";
+                var $Input = jQuery(this.getInputDomRef());
+                if (this._oDate) {
+                    // format date again - maybe value uses not the right pattern ???
+                    sOutputValue = sValue;
+                }
+                $Input.val(sOutputValue);
+            }
 
-		/**
-		 * Parses a time string into a Date object
-		 * Using sap.ui.core.format.DateFormat.getTimeInstance().parse()
-		 */
-		TimePicker.prototype._parseValue = function (sValue) {
-			// convert to date object
-			var oDate = this._oParseHHmm.parse(sValue);
-			return oDate;
-		};
+            return this;
 
-		/**
-		 * Formats a Date object into a time string
-		 * Using sap.ui.core.format.DateFormat.getTimeInstance().format()
-		 */
-		TimePicker.prototype._formatValue = function (oDate) {
-			// convert to date object
-			var sValue = this._oFormatHHmm.format(oDate);
-			return sValue;
-		};
+        };
 
-		/**
-		 * Override default setter for proper formatting
-		 */
-		TimePicker.prototype.setHHmm = function (sHHmm) {
+        /**
+         * Parses a time string into a Date object
+         * Using sap.ui.core.format.DateFormat.getTimeInstance().parse()
+         */
+        TimePicker.prototype._parseValue = function (sValue) {
+            // convert to date object
+            var oDate = this._oParseHHmm.parse(sValue);
+            return oDate;
+        };
 
-			var sHHmm = this.getHHmm();
-			if (sHHmm == sOldHHmm) {
-				return this;
-			}
+        /**
+         * Formats a Date object into a time string
+         * Using sap.ui.core.format.DateFormat.getTimeInstance().format()
+         */
+        TimePicker.prototype._formatValue = function (oDate) {
+            // convert to date object
+            var sValue = this._oFormatHHmm.format(oDate);
+            return sValue;
+        };
 
-			this.setProperty("HHmm", sHHmm, true);
-			var sValue = "";
+        /**
+         * Override default setter for proper formatting
+         */
+        TimePicker.prototype.setHHmm = function (sHHmm) {
 
-			if (sHHmm) {
-				this._oDate = this._oFormatHHmm.parse(sHHmm);
-				if (!this._oDate || this._oDate.getTime() < this._oMinDate.getTime() || this._oDate.getTime() > this._oMaxDate.getTime()) {
-					this._oDate = undefined;
-					jQuery.sap.log.error("Value can not be converted to a valid time", this);
-				}
-			} else {
-				this._oDate = undefined;
-			}
+            var sHHmm = this.getHHmm();
+            if (sHHmm == sOldHHmm) {
+                return this;
+            }
 
-			if (this._oDate) {
-				sValue = this._oFormatHHmm.format(this._oDate);
-			}
-			this.setProperty("value", sValue, true);
+            this.setProperty("HHmm", sHHmm, true);
+            var sValue = "";
 
-			if (this.getDomRef()) {
-				// update value in combo box
-				var sOutputValue = "";
-				var $Input = jQuery(this.getInputDomRef());
-				if (this._oDate) {
-					// format date again - maybe value uses not the right pattern ???
-					sOutputValue = sValue;
-				}
-				$Input.val(sOutputValue);
-			}
+            if (sHHmm) {
+                this._oDate = this._oFormatHHmm.parse(sHHmm);
+                if (!this._oDate || this._oDate.getTime() < this._oMinDate.getTime() || this._oDate.getTime() > this._oMaxDate.getTime()) {
+                    this._oDate = undefined;
+                    jQuery.sap.log.error("Value can not be converted to a valid time", this);
+                }
+            } else {
+                this._oDate = undefined;
+            }
 
-			return this;
+            if (this._oDate) {
+                sValue = this._oFormatHHmm.format(this._oDate);
+            }
+            this.setProperty("value", sValue, true);
 
-		};
+            if (this.getDomRef()) {
+                // update value in combo box
+                var sOutputValue = "";
+                var $Input = jQuery(this.getInputDomRef());
+                if (this._oDate) {
+                    // format date again - maybe value uses not the right pattern ???
+                    sOutputValue = sValue;
+                }
+                $Input.val(sOutputValue);
+            }
 
-	}
-		());
+            return this;
 
-	return TimePicker;
+        };
+
+    }());
+
+    return TimePicker;
 
 }, true);
