@@ -1,4 +1,17 @@
-<mvc:View
+<mvc:View controllerName="de.demo.timepicker.controller.App"
    xmlns="sap.m"
-   xmlns:mvc="sap.ui.core.mvc">
+   xmlns:mvc="sap.ui.core.mvc"
+   displayBlock="true">
+   <App>
+      <pages>
+         <Page>
+            <content>
+               <Panel>
+                  <content>
+                  </content>
+               </Panel>
+            </content>
+         </Page>
+      </pages>
+   </App>
 </mvc:View>
