@@ -1,6 +1,5 @@
-
 .uiTfTimePickerIcon {
-  background-image: url("/img/timepickericon.png");
+  background-image: url("./../img/timepickericon.png");
   background-position: center;
   background-repeat: no-repeat;
   

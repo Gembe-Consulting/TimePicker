@@ -1,9 +1,10 @@
 sap.ui.define([
-        "sap/ui/commons/ComboBox"
-    ], function (ComboBox) {
+        "sap/ui/commons/ComboBox",
+        "sap/ui/core/format/DateFormat"
+    ], function (ComboBox, DateFormat) {
     "use strict";
 
-    var TimePicker = ComboBox.extend("PES.Common.Control.TimePicker", {
+    var TimePicker = ComboBox.extend("de.demo.timepicker.control.timepicker.TimePicker", {
 
             metadata : {
 
@@ -68,12 +69,12 @@ sap.ui.define([
             var sTimeFormatStyle = this.getTimeFormatStyle();
             var sTimeSourcePattern = this.getTimeSourcePattern();
 
-            this._oFormatHHmm = sap.ui.core.format.DateFormat.getTimeInstance({
+            this._oFormatHHmm = DateFormat.getTimeInstance({
                     style : sTimeFormatStyle,
                     strictParsing : true
                 });
 
-            this._oParseHHmm = sap.ui.core.format.DateFormat.getTimeInstance({
+            this._oParseHHmm = DateFormat.getTimeInstance({
                     source : {
                         pattern : sTimeSourcePattern
                     },
@@ -87,7 +88,7 @@ sap.ui.define([
 
             var oModel = new sap.ui.model.json.JSONModel();
             oModel.setSizeLimit(300); //set iSizeLimit to 300 (default: 100) to see all time items
-            oModel.loadData("../../data/TimeValues.json");
+            oModel.loadData("./data/TimeValues.json");
             this.setModel(oModel);
 
             var oListItemTemplate = new sap.ui.core.ListItem({
@@ -188,7 +189,7 @@ sap.ui.define([
          */
         TimePicker.prototype.setHHmm = function (sHHmm) {
 
-            var sHHmm = this.getHHmm();
+            var sOldHHmm = this.getHHmm();
             if (sHHmm == sOldHHmm) {
                 return this;
             }

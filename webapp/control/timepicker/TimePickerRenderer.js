@@ -1,7 +1,8 @@
 // Provides default renderer for control Time Picker
 sap.ui.define([
         'sap/ui/commons/ComboBoxRenderer',
-        'sap/ui/core/Renderer'], function (ComboBoxRenderer, Renderer) {
+        'sap/ui/core/Renderer'
+    ], function (ComboBoxRenderer, Renderer) {
     "use strict";
 
     /**

@@ -1,5 +1,6 @@
 <mvc:View controllerName="de.demo.timepicker.controller.App"
    xmlns="sap.m"
+   xmlns:custom="de.demo.timepicker.control.timepicker"
    xmlns:mvc="sap.ui.core.mvc"
    displayBlock="true">
    <App>
@@ -8,6 +9,10 @@
             <content>
                <Panel>
                   <content>
+                    <custom:TimePicker 
+                        HHmm = "{someSourceModel>/time}"
+                        change="onTimeChange"/>
+                    <Text id="showText" />
                   </content>
                </Panel>
             </content>
