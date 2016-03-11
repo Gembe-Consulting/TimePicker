@@ -4,7 +4,7 @@ sap.ui.define([
    "sap/ui/model/resource/ResourceModel"
 ], function (UIComponent, JSONModel, ResourceModel) {
    "use strict";
-   return UIComponent.extend("sap.ui.demo.wt.Component", {
+   return UIComponent.extend("de.demo.timepicker.Component", {
             metadata : {
 		          rootView: "de.demo.timepicker.view.App"
 	},
