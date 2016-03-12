@@ -7,13 +7,12 @@ sap.ui.define([
 	return Controller.extend("de.demo.timepicker.controller.App", {
 		onInit : function () {
 
-			var oModel = new JSONModel();
-			var oData = {
-				time : "0130"
-			};
-			oModel.setData(oData);
-
-			this.getView().setModel(oModel, "someSourceModel");
+			var oDataModel = new JSONModel({
+				time1: "223001",
+				time2: "174502",
+				time3: "174503"
+			});
+			this.getView().setModel(oDataModel,"source");
 
 		},
 		onTimeChange : function (oEvent) {

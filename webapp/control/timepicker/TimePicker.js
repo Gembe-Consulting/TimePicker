@@ -63,12 +63,15 @@ sap.ui.define([
 
             ComboBox.prototype.init.apply(this, arguments);
 
-            //var sTimeFormatStyle = this.getTimeFormatStyle();
-            //var sTimeSourcePattern = this.getTimeSourcePattern();
+            // The DateFormat class can be used to parse a string representing a date, time or datetime into a JavaScript date object and vice versa (also known as format).
+            // The format pattern must be defined in LDML date format notation. The following options are available:
+            // style: Can be "short", "medium", "long" or "full" and will use a locale dependent pattern
+            // pattern: A date pattern in LDML date format notation
+            // In case both, style and pattern, are defined, the pattern is used and the style ignored.
 
             //Set up a helper to for the hhmmss property
             this._oFormatHhmmss = DateFormat.getTimeInstance({
-                    pattern : "HHmmss",
+                    pattern : "HHmmss",		// Our data source will always provide this format
                     strictParsing : true
                 });
 

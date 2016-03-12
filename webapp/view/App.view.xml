@@ -11,18 +11,25 @@
 					<Panel>
 						<content>
 						
-							<custom:TimePicker timeValueListStep="0"
-							                   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="15"
+							                   change="onTimeChange"
+											   value="{path: 'source>/time2', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss'}}"/>
+							<custom:TimePicker timeValueListStep="15"
+							                   change="onTimeChange"
+											   value="{path: 'source>/time2', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'hh'}}"/>
+<!--
 							<custom:TimePicker timeValueListStep="2"
 							                   change="onTimeChange"/>
 							<custom:TimePicker timeValueListStep="3"
 											   style="short"
 							                   change="onTimeChange"/>
+
+							<custom:TimePicker timeValueListStep="0"
+							                   change="onTimeChange"/>
 							<custom:TimePicker timeValueListStep="5"
 							                   change="onTimeChange"
 											   style="long"/>
-							<custom:TimePicker timeValueListStep="15"
-							                   change="onTimeChange"/>
+
 							<custom:TimePicker timeValueListStep="60"
 							                   change="onTimeChange"/>
 							<custom:TimePicker timeValueListStep="60"
@@ -36,6 +43,7 @@
 											   locale="en"
 											   style="long"
 											   change="onTimeChange"/>
+-->
 							<Text id="showText"/>
 						</content>
 					</Panel>
