@@ -17,7 +17,7 @@ sap.ui.define([
 
 		},
 		onTimeChange : function (oEvent) {
-			var sValue = oEvent.getParameter("newValue");
+			var sValue = oEvent.getParameter("newHhmmss");
 			this.byId("showText").setText(sValue);
 		}
 

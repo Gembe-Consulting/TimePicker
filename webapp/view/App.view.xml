@@ -1,22 +1,46 @@
-<mvc:View controllerName="de.demo.timepicker.controller.App"
-   xmlns="sap.m"
-   xmlns:custom="de.demo.timepicker.control.timepicker"
-   xmlns:mvc="sap.ui.core.mvc"
-   displayBlock="true">
-   <App>
-      <pages>
-         <Page>
-            <content>
-               <Panel>
-                  <content>
-                    <custom:TimePicker 
-                        HHmm = "{someSourceModel>/time}"
-                        change="onTimeChange"/>
-                    <Text id="showText" />
-                  </content>
-               </Panel>
-            </content>
-         </Page>
-      </pages>
-   </App>
+<?xml version="1.0"?>
+<mvc:View xmlns="sap.m"
+          xmlns:custom="de.demo.timepicker.control.timepicker"
+          xmlns:mvc="sap.ui.core.mvc"
+          controllerName="de.demo.timepicker.controller.App"
+          displayBlock="true">
+	<App>
+		<pages>
+			<Page>
+				<content>
+					<Panel>
+						<content>
+						
+							<custom:TimePicker timeValueListStep="0"
+							                   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="2"
+							                   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="3"
+											   style="short"
+							                   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="5"
+							                   change="onTimeChange"
+											   style="long"/>
+							<custom:TimePicker timeValueListStep="15"
+							                   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="60"
+							                   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="60"
+											   locale="en"
+											   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="60"
+											   locale="en"
+											   style="short"
+											   change="onTimeChange"/>
+							<custom:TimePicker timeValueListStep="60"
+											   locale="en"
+											   style="long"
+											   change="onTimeChange"/>
+							<Text id="showText"/>
+						</content>
+					</Panel>
+				</content>
+			</Page>
+		</pages>
+	</App>
 </mvc:View>
