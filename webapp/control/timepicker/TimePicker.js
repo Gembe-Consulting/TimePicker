@@ -10,7 +10,6 @@ sap.ui.define([
             metadata : {
 
                 properties : {
-
                     /**
                      * Defines the time as a "HHmmss" string, independent from the format used.
                      * The inherited sap.ui.commons.ComboBox "value" attribute uses the time format as configured via the locale.
@@ -31,7 +30,7 @@ sap.ui.define([
                     },
                     /**
                      * Defines the style, e.g. "short", "medium" or "long", which is used to format time value within the listbox and the value field.
-                     * We will use the locale default style (medium most of the time).
+                     * As default we will use the locale default style (medium most of the time).
                      */
                     style : {
                         type : "string",
@@ -465,7 +464,7 @@ sap.ui.define([
                 for (var i = 0; i < iMinuteMaxIterator; i++) {
                     if ((i % (iStep)) == 0) {
 
-                        //We need to preven JS calculation instead of concatination
+                        //We need to prevent JS number calculation instead of string concatination
                         var hours = String(parseInt(i / MINSPERHOUR) % HOURSPERDAY);
                         var minutes = String(i % MINSPERHOUR);
                         var result = (hours.length == 1 ? "0" + hours : hours) + (minutes.length == 1 ? "0" + minutes : minutes);
