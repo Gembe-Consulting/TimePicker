@@ -5,10 +5,10 @@ sap.ui.define([
 ], function (UIComponent, JSONModel, ResourceModel) {
    "use strict";
    return UIComponent.extend("de.demo.timepicker.Component", {
-            metadata : {
-		          rootView: "de.demo.timepicker.view.App"
-	},
-      init : function () {
+      metadata: {
+         manifest: "json"
+      },
+      init: function () {
          UIComponent.prototype.init.apply(this, arguments);
       }
    });
