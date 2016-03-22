@@ -10,13 +10,28 @@
 				<content>
 					<Panel>
 						<content>
-						
+
 							<custom:TimePicker timeValueListStep="15"
 							                   change="onTimeChange"
-											   value="{path: 'source>/time2', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss'}}"/>
-							<custom:TimePicker timeValueListStep="15"
+											   value="{path: 'source>/time1', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss'}}"/>
+							<custom:TimePicker timeValueListStep="20"
 							                   change="onTimeChange"
-											   value="{path: 'source>/time2', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'hh'}}"/>
+											   value="{path: 'source>/time1', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'hh'}}"/>
+              <custom:TimePicker timeValueListStep="60"
+                                 change="onTimeChange"
+                        value="{path: 'source>/time1', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'HH:mm:ss'}}"/>
+              <custom:TimePicker timeValueListStep="30"
+                                 change="onTimeChange"
+                        value="{path: 'source>/tim1'}" style="short"/>
+              <custom:TimePicker timeValueListStep="30"
+                                 change="onTimeChange"
+                        value="{path: 'source>/time2'}" style="short" />
+              <custom:TimePicker timeValueListStep="30"
+                                 change="onTimeChange"
+                        value="{path: 'source>/time3'}" style="long" />
+              <custom:TimePicker timeValueListStep="30"
+                                 change="onTimeChange"
+                        value="{path: 'source>/time5', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'hh:mm:ss a'}}"/>
 <!--
 							<custom:TimePicker timeValueListStep="2"
 							                   change="onTimeChange"/>
