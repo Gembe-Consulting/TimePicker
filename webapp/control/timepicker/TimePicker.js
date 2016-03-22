@@ -252,7 +252,7 @@ sap.ui.define([
             }
 
             // Check if property is valid. If not, set default style "medium"
-            if(sStyle !== "short" || sStyle !== "medium" || sStyle !== "long"){
+            if(sStyle !== "short" && sStyle !== "medium" && sStyle !== "long"){
               sStyle = "medium";
             }
 
@@ -322,7 +322,7 @@ sap.ui.define([
 
                      oData.generatedHHmmss.push({
                         "text": result,
-                        "key": result
+                        "key": counter
                      });
 
                      counter++;
@@ -351,19 +351,16 @@ sap.ui.define([
             var oListItemTemplate = new sap.ui.core.ListItem({
                text: {
                   path: "text",
-                  type: oOutputType,
-                  mode: sap.ui.model.BindingMode.OneTime
+                  type: oOutputType
                },
                key: {
-                  path: "key",
-                  mode: sap.ui.model.BindingMode.OneTime
+                  path: "key"
                }
             });
 
             this.bindItems({
                path: "/generatedHHmmss",
-               template: oListItemTemplate,
-               mode: sap.ui.model.BindingMode.OneTime
+               template: oListItemTemplate
             });
          };
 
@@ -379,7 +376,8 @@ sap.ui.define([
             var sPattern = "";
             var bRelative = false;
             var oBinding = oThis.getBinding("value");
-            var oLocale;
+
+            var oLocale = sap.ui.getCore().getConfiguration().getLocale();
 
             //First check if value is given by binding and if binding type is a instance of sap.ui.model.type.Time
             //If yes, we use the pattern given by binding type
@@ -409,6 +407,7 @@ sap.ui.define([
                   }, oLocale);
                } else {
                   oThis._oFormat = DateFormat.getTimeInstance({
+                    source:{pattern: "HHmmss"},
                      pattern: sPattern,
                      strictParsing: true,
                      relative: bRelative
