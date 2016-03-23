@@ -19,6 +19,7 @@ sap.ui.define([
                group: "Misc",
                defaultValue: null
             },
+
             /**
              * Defines the style, e.g. "short", "medium" or "long", which is used to format time value within the listbox and the value field.
              * As default we will use the locale default style (medium most of the time).
@@ -28,11 +29,12 @@ sap.ui.define([
                group: "Misc",
                defaultValue: "medium"
             },
+
             /**
              * Defines the method how the time value list is created:
              * <ul>
              * <li>'0' of type <code>int</code> : No List is created.</li>
-             * <li>'1/2/3/4/5/6/10/12/15/20/30' of type <code>int</code> : Creates a list depending on the given number. </li>
+             * <li>'1/2/3/4/5/6/10/12/15/20/30' of type <code>int</code> : Creates a list depending on the given number.</li>
              * </ul>
              */
             timeValueListStep: {
@@ -65,8 +67,8 @@ sap.ui.define([
                strictParsing: true
             });
 
-            // Setup locale to support foramtting and parsing
-            this._oLocaleFormat = sap.ui.getCore().getConfiguration().getFormatSettings().getFormatLocale();
+            // Locale represents a locale setting, consisting of a language, script, region, variants, extensions and private use section
+            this._oLocale = sap.ui.getCore().getConfiguration().getLocale();
 
             this._oMinDate = new Date(1, 0, 1);
             this._oMinDate.setFullYear(1); // otherwise year 1 will be converted to year 1901
@@ -101,10 +103,6 @@ sap.ui.define([
                return this;
             }
 
-            // Update value property
-            this.setProperty("value", sValue, true);
-            this._bValueSet = true;
-
             if (sValue) {
                this._oDate = this._parseValue(sValue);
                if (!this._oDate || this._oDate.getTime() < this._oMinDate.getTime() || this._oDate.getTime() > this._oMaxDate.getTime()) {
@@ -115,6 +113,13 @@ sap.ui.define([
                this._oDate = undefined;
             }
 
+            // format date again - maybe value uses not the right pattern
+            sValue = this._formatValue(this._oDate);
+
+            // Update value property
+            this.setProperty("value", sValue, true);
+            this._bValueSet = true;
+
             // Update hhmmss property
             var sHhmmss = "";
             if (this._oDate) {
@@ -122,13 +127,11 @@ sap.ui.define([
             }
             this.setProperty("hhmmss", sHhmmss, true);
 
+            // Update value in combo box
             if (this.getDomRef()) {
-               // update value in input field
                var sOutputValue = "";
                var $Input = jQuery(this.getInputDomRef());
                if (this._oDate) {
-                  // format date again - maybe value uses not the right pattern
-                  sValue = this._formatValue(this._oDate);
                   sOutputValue = sValue;
                }
                $Input.val(sOutputValue);
@@ -148,9 +151,6 @@ sap.ui.define([
                return this;
             }
 
-            this.setProperty("hhmmss", sHhmmss, true);
-            var sValue = "";
-
             if (sHhmmss) {
                this._oDate = this._oFormatHhmmss.parse(sHhmmss);
                if (!this._oDate || this._oDate.getTime() < this._oMinDate.getTime() || this._oDate.getTime() > this._oMaxDate.getTime()) {
@@ -161,19 +161,23 @@ sap.ui.define([
                this._oDate = undefined;
             }
 
-            if (this._oDate) {
-               sValue = this._oFormatHhmmss.format(this._oDate);
-            }
 
+            // Update hhmmss property
+            this.setProperty("hhmmss", sHhmmss, true);
+            this._bHhmmssSet = true;
+
+            // Update value property
+            var sValue = "";
+            if (this._oDate) {
+               sValue = this._formatValue(this._oDate);
+            }
             this.setProperty("value", sValue, true);
 
+            // Update value in combo box
             if (this.getDomRef()) {
-               // update value in combo box
                var sOutputValue = "";
                var $Input = jQuery(this.getInputDomRef());
                if (this._oDate) {
-                  // format date again - maybe value uses not the right pattern
-                  sValue = this._formatValue(this._oDate);
                   sOutputValue = sValue;
                }
                $Input.val(sOutputValue);
@@ -181,88 +185,6 @@ sap.ui.define([
 
             return this;
 
-         };
-
-         /**
-          * Fire event change to attached listeners.
-          *
-          * Provides the following event parameters:
-          * <ul>
-          * <li>'newValue' of type <code>string</code> The new / changed value of the TimePicker.</li>
-          * <li>'newHhmmss' of type <code>string</code> The new / changed Yyyymmdd of the TimePicker. </li>
-          * <li>'invalidValue' of type <code>boolean</code> The new / changed value of the TimePicker is not a valid date. </li>
-          * </ul>
-          *
-          * @param {boolean} bInvalidValue true is value is invalid
-          * @return {TimePicker} <code>this</code> to allow method chaining
-          * @protected
-          */
-         TimePicker.prototype.fireChange = function (bInvalidValue) {
-
-            this.fireEvent("change", {
-               newValue: this.getValue(),
-               newHhmmss: this.getHhmmss(),
-               invalidValue: bInvalidValue
-            });
-
-            return this;
-
-         };
-
-         /**
-          * Parses a time string into a Date object
-          * Using sap.ui.core.format.DateFormat.getTimeInstance().parse()
-          */
-         TimePicker.prototype._parseValue = function (sValue) {
-
-            var that = this;
-
-            var oFormat = _getFormatter(that);
-
-            jQuery.sap.log.info("TimePicker " + this.getId() + ": parsing value " + sValue);
-
-            // convert to date object
-            var oDate = oFormat.parse(sValue);
-            return oDate;
-
-         };
-
-         /**
-          * Formats a Date object into a time string
-          * Using sap.ui.core.format.DateFormat.getTimeInstance().format()
-          */
-         TimePicker.prototype._formatValue = function (oDate) {
-
-            var that = this;
-
-            var oFormat = _getFormatter(that);
-
-            jQuery.sap.log.info("TimePicker " + this.getId() + ": formatting date " + oDate.toLocaleString());
-
-            // convert to date object
-            var sValue = oFormat.format(oDate);
-            return sValue;
-
-         };
-
-         TimePicker.prototype.setStyle = function (sStyle) {
-            var sStyleOld = this.getStyle();
-            if (sStyleOld == sStyle) {
-               return this;
-            }
-
-            // Check if property is valid. If not, set default style "medium"
-            if(sStyle !== "short" && sStyle !== "medium" && sStyle !== "long"){
-              sStyle = "medium";
-            }
-
-            this.setProperty("style", sStyle, true);
-
-            //repopulate value list if it has already been set
-            if (this._bTimeValueListStepSet) {
-               this._bTimeValueListStepSet = undefined; //reset flag to allow repopulating
-               this.setTimeValueListStep(this.getTimeValueListStep());
-            }
          };
 
          TimePicker.prototype.setTimeValueListStep = function (iStep) {
@@ -336,10 +258,7 @@ sap.ui.define([
 
             this.setModel(oModel);
 
-            var sStyle = this.getStyle();
-
-            var oLocaleData = sap.ui.core.LocaleData.getInstance(this._oLocaleFormat);
-            var sPattern = oLocaleData.getTimePattern(sStyle);
+            var sPattern = this._discoverOutputPattern();
 
             var oOutputType = new sap.ui.model.type.Time({
                source: {
@@ -364,6 +283,115 @@ sap.ui.define([
             });
          };
 
+         TimePicker.prototype.setStyle = function (sStyle) {
+            var sStyleOld = this.getStyle();
+            if (sStyleOld == sStyle) {
+               return this;
+            }
+
+            // Check if property is valid. If not, set default style "medium"
+            if (sStyle !== "short" && sStyle !== "medium" && sStyle !== "long") {
+               sStyle = "medium";
+            }
+
+            this.setProperty("style", sStyle, true);
+            this._bStyleSet = true;
+
+            //repopulate value list if it has already been set
+            if (this._bTimeValueListStepSet) {
+               this._bTimeValueListStepSet = undefined; //reset flag to allow repopulating
+               this.setTimeValueListStep(this.getTimeValueListStep());
+            }
+         };
+
+         /**
+          * Fire event change to attached listeners.
+          *
+          * Provides the following event parameters:
+          * <ul>
+          * <li>'newValue' of type <code>string</code> The new / changed value of the TimePicker.</li>
+          * <li>'newHhmmss' of type <code>string</code> The new / changed Yyyymmdd of the TimePicker. </li>
+          * <li>'invalidValue' of type <code>boolean</code> The new / changed value of the TimePicker is not a valid date. </li>
+          * </ul>
+          *
+          * @param {boolean} bInvalidValue true is value is invalid
+          * @return {TimePicker} <code>this</code> to allow method chaining
+          * @protected
+          */
+         TimePicker.prototype.fireChange = function (bInvalidValue) {
+
+            this.fireEvent("change", {
+               newValue: this.getValue(),
+               newHhmmss: this.getHhmmss(),
+               invalidValue: bInvalidValue
+            });
+
+            return this;
+
+         };
+
+         /**
+          * Parses a time string into a Date object
+          * Using sap.ui.core.format.DateFormat.getTimeInstance().parse()
+          */
+         TimePicker.prototype._parseValue = function (sValue) {
+
+            var that = this;
+
+            var oFormat = _getFormatter(that);
+
+            jQuery.sap.log.info("TimePicker " + this.getId() + ": parsing value " + sValue);
+
+            // convert to date object
+            var oDate = oFormat.parse(sValue);
+            return oDate;
+
+         };
+
+         /**
+          * Formats a Date object into a time string
+          * Using sap.ui.core.format.DateFormat.getTimeInstance().format()
+          */
+         TimePicker.prototype._formatValue = function (oDate) {
+
+            var that = this;
+
+            var oFormat = _getFormatter(that);
+
+            jQuery.sap.log.info("TimePicker " + this.getId() + ": formatting date " + oDate.toLocaleString());
+
+            // convert to date object
+            var sValue = oFormat.format(oDate);
+            return sValue;
+
+         };
+
+         TimePicker.prototype._discoverOutputPattern = function () {
+
+            var sPattern = "";
+
+            var oBinding = this.getBinding("value");
+
+            //First check if value is given by binding and if binding type is a instance of sap.ui.model.type.Time
+            //If yes, we use the pattern given by binding type
+            if (oBinding && oBinding.oType && (oBinding.oType instanceof Time)) {
+               sPattern = oBinding.oType.getOutputPattern();
+            }
+
+            // Pattern not defined by binding type?
+            if (!sPattern) {
+
+               var sStyle = this.getStyle();
+
+               // LocaleData provides access to locale-specific data, like date formats, number formats, currencies, etc.
+               var oLocaleData = new sap.ui.core.LocaleData(this._oLocale);
+
+               sPattern = oLocaleData.getTimePattern(sStyle);
+
+            }
+
+            return sPattern;
+         };
 
          /**
           * Returns the Formatter which is used to format the time value.
@@ -373,47 +401,17 @@ sap.ui.define([
           */
          function _getFormatter(oThis) {
 
-            var sPattern = "";
-            var bRelative = false;
-            var oBinding = oThis.getBinding("value");
+            var sPattern = oThis._discoverOutputPattern();
 
-            var oLocale = sap.ui.getCore().getConfiguration().getLocale();
+            oThis._oFormat = DateFormat.getTimeInstance({
+               source: {
+                  pattern: "HHmmss"
+               },
+               pattern: sPattern,
+               strictParsing: true,
+               relative: false
+            }, oThis._oLocale);
 
-            //First check if value is given by binding and if binding type is a instance of sap.ui.model.type.Time
-            //If yes, we use the pattern given by binding type
-            if (oBinding && oBinding.oType && (oBinding.oType instanceof Time)) {
-               sPattern = oBinding.oType.getOutputPattern();
-               bRelative = !!oBinding.oType.oOutputFormat.oFormatOptions.relative;
-            }
-
-            if (!sPattern) {
-               // no databinding is used -> use pattern from controls locale or sap.ui.core
-               var oLocaleData = sap.ui.core.LocaleData.getInstance(oThis._oLocaleFormat);
-
-               var sStyle = oThis.getStyle();
-
-               sPattern = oLocaleData.getTimePattern(sStyle);
-
-            }
-
-            // Check if discoverd pattern is th same as the currently used pattern
-            if (sPattern != oThis._sUsedPattern) {
-               oThis._sUsedPattern = sPattern;
-               if (sPattern == "short" || sPattern == "medium" || sPattern == "long") {
-                  oThis._oFormat = DateFormat.getTimeInstance({
-                     style: sPattern,
-                     strictParsing: true,
-                     relative: bRelative
-                  }, oLocale);
-               } else {
-                  oThis._oFormat = DateFormat.getTimeInstance({
-                    source:{pattern: "HHmmss"},
-                     pattern: sPattern,
-                     strictParsing: true,
-                     relative: bRelative
-                  }, oLocale);
-               }
-            }
             return oThis._oFormat;
          }
       }

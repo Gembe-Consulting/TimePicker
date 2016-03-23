@@ -3,7 +3,7 @@
 		"_version" : "1.1.0",
 		"id" : "de.demo.timepicker",
 		"type" : "application",
-		"i18n" : "i18n/lang.properties",
+		"i18n" : "i18n/i18n.properties",
 		"title" : "{{applicationTitelText}}",
 		"description" : "{{applicationDescriptionText}}",
 		"applicationVersion" : {
@@ -36,7 +36,7 @@
 			"i18n" : {
 				"type" : "sap.ui.model.resource.ResourceModel",
 				"settings" : {
-					"bundleName" : "de.demo.timepicker.i18n.messageBundle"
+					"bundleName" : "de.demo.timepicker.i18n.i18n"
 				}
 			}
 		},

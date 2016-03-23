@@ -1,22 +1,28 @@
 <?xml version="1.0"?>
-<mvc:View xmlns="sap.m"
-          xmlns:custom="de.demo.timepicker.control.timepicker"
-          xmlns:mvc="sap.ui.core.mvc"
-          controllerName="de.demo.timepicker.controller.App"
-          displayBlock="true">
-	<App>
-		<pages>
-			<Page>
-				<content>
-					<Panel>
-						<content>
-              <custom:TimePicker timeValueListStep="30"
-                                 change="onTimeChange"
-                        value="{path: 'source>/time1'}" style="short"/>
+<mvc:View xmlns="sap.m" xmlns:custom="de.demo.timepicker.control.timepicker" xmlns:mvc="sap.ui.core.mvc" controllerName="de.demo.timepicker.controller.App" displayBlock="true">
+  <App>
+    <pages>
+      <Page>
+        <content>
+          <Panel>
+            <content>
+              <Text text="Time Picker 12/sourcevalue/bindingtype hh:" />
+              <custom:TimePicker timeValueListStep="12" value="{path: 'source>/time2', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'hh'}}"/>
 <!--
-							<custom:TimePicker timeValueListStep="15"
-							                   change="onTimeChange"
-											   value="{path: 'source>/time1', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss'}}"/>
+
+<Text text="Time Picker 60/short:" />
+<custom:TimePicker timeValueListStep="60" style="short"/>
+<Text text="Time Picker 20/long:" />
+<custom:TimePicker timeValueListStep="20" style="long"/>
+<Text text="Time Picker 20/medium:" />
+<custom:TimePicker timeValueListStep="20" style="long"/>
+<Text text="Time Picker 5/short/sourcevalue:" />
+<custom:TimePicker timeValueListStep="5"  style="short" value="{path: 'source>/time1'}"/>
+
+
+              <custom:TimePicker timeValueListStep="15" change="onTimeChange" value="{path: 'source>/time1'}"/>
+
+
 							<custom:TimePicker timeValueListStep="20"
 							                   change="onTimeChange"
 											   value="{path: 'source>/time1', type:'sap.ui.model.type.Time', formatOptions:{source:'hhmmss', pattern: 'hh'}}"/>
@@ -62,11 +68,11 @@
 											   style="long"
 											   change="onTimeChange"/>
 -->
-							<Text id="showText"/>
-						</content>
-					</Panel>
-				</content>
-			</Page>
-		</pages>
-	</App>
+              <Text id="showText"/>
+            </content>
+          </Panel>
+        </content>
+      </Page>
+    </pages>
+  </App>
 </mvc:View>
